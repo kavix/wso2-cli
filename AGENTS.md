@@ -172,6 +172,11 @@ This codebase is open-sourced as the **WSO2 Integration Platform CLI**. Go ident
 - npm keyword `choreo` → `devant` (`scripts/mcp-npm-package/package.json`)
 - Stale i18n exclusions `vscode.choreo.ext` and `CHOREO_ENV` (the code emits `vscode.wso2ip.ext` and reads `WSO2IP_ENV`)
 - `.gitignore` guards for the pre-rename `/choreo` binary
+- CI secret references `secrets.CHOREO_*` → `secrets.WSO2IP_*`. Safe because secrets are
+  per-repository settings and do not travel with code: `gh secret list` reports none on
+  either published repo, so nothing was resolving anyway. **Whoever configures CI must
+  create them under the new names** — `WSO2IP_PROD_TEST_USER_PASS`,
+  `WSO2IP_DEV_TEST_USER_PASS`, `WSO2IP_GITHUB_TOKEN`.
 
 **Left unchanged, and why.** A grep for "choreo" still returns ~119 hits. Every one is in a
 category where changing it breaks something; none are Go identifiers (that grep returns zero):
@@ -186,7 +191,6 @@ category where changing it breaks something; none are Go identifiers (that grep 
 | `"choreo-cache"` | Value the database API accepts (the agent-facing text around it was softened) |
 | `"choreo"`, `cloudType=choreo` | Service identifiers sent to user-mgt and subscriptions |
 | `choreoanonymouspullable.azurecr.io` | The actual registry host |
-| `secrets.CHOREO_*` in workflows | **Names of secrets configured in GitHub repo settings** — renaming the YAML alone yields empty values and CI fails silently |
 | `https://wso2.com/choreo/docs/...` | Live documentation links; no verified Integration Platform equivalents |
 | `.choreo/` in `.gitignore` | Guards a developer's pre-rebrand credential directory from being committed |
 | `workspaces/apps/choreo-console/...` in comments | Accurate path into the console repo, cited as the source of truth for integration filtering |
