@@ -167,14 +167,29 @@ This codebase is open-sourced as the **WSO2 Integration Platform CLI**. Go ident
 - `GetChoreoSamples` → `GetSamples`; `ChoreoConsoleUrl` → `ConsoleUrl`
 - Local config directory: `.choreo/` → `.wso2/`
 
-**Left unchanged (backend-enforced):**
-- JSON tags `choreoEnv` / `choreo_env` (GraphQL/REST schema)
-- OAuth scopes `choreo:*`
-- API path segments: `/choreo-connections`, `/choreo-database-connections`, `choreologgingapi`, `choreoobsapi`
-- String literals: `"choreo-local-bridge"`, `"choreo-cache"`, `"choreo"`, `"choreo-console"`, `"choreoclif3b070a3d4866bb5"`
-- Field names: `"sandboxEndpointChoreo"`
-- All `https://choreo.dev`, `https://sts.choreo.dev` URLs
-- Domain suffixes `.choreoapps.dev`, `.choreoapis.dev`
+**Also renamed in the September 2026 pass** (no backend dependency, so these were ours to change):
+- Test env vars `CHOREO_CLI_TEST_*` → `WSO2IP_TEST_*` (code and `.github/actions/e2e-test-run`)
+- npm keyword `choreo` → `devant` (`scripts/mcp-npm-package/package.json`)
+- Stale i18n exclusions `vscode.choreo.ext` and `CHOREO_ENV` (the code emits `vscode.wso2ip.ext` and reads `WSO2IP_ENV`)
+- `.gitignore` guards for the pre-rename `/choreo` binary
+
+**Left unchanged, and why.** A grep for "choreo" still returns ~119 hits. Every one is in a
+category where changing it breaks something; none are Go identifiers (that grep returns zero):
+
+| Category | Why it cannot change |
+|---|---|
+| Production URLs — `choreo.dev`, `sts.choreo.dev`, `.choreoapps.dev`, `.choreoapis.dev` | The live endpoints the CLI calls |
+| OAuth scopes `choreo:*` | Issued and validated by the STS |
+| API paths — `/choreo-connections`, `/choreo-apis`, `choreologgingapi`, `choreoobsapi`, `urn:choreosystem:*` | Routed by the gateway |
+| JSON tags `choreoEnv` / `choreo_env` | GraphQL/REST wire schema |
+| `"choreo-local-bridge"` | Component and image name looked up on the platform |
+| `"choreo-cache"` | Value the database API accepts (the agent-facing text around it was softened) |
+| `"choreo"`, `cloudType=choreo` | Service identifiers sent to user-mgt and subscriptions |
+| `choreoanonymouspullable.azurecr.io` | The actual registry host |
+| `secrets.CHOREO_*` in workflows | **Names of secrets configured in GitHub repo settings** — renaming the YAML alone yields empty values and CI fails silently |
+| `https://wso2.com/choreo/docs/...` | Live documentation links; no verified Integration Platform equivalents |
+| `.choreo/` in `.gitignore` | Guards a developer's pre-rebrand credential directory from being committed |
+| `workspaces/apps/choreo-console/...` in comments | Accurate path into the console repo, cited as the source of truth for integration filtering |
 
 ## Versioning
 
@@ -249,7 +264,7 @@ Run with `make test`. Located alongside source files (not in a separate director
 ### Integration Tests
 
 Located in `integration_tests/`. Require environment variables:
-- `CHOREO_CLI_TEST_USER_NAME`, `CHOREO_CLI_TEST_USER_PASS` — test credentials
+- `WSO2IP_TEST_USER_NAME`, `WSO2IP_TEST_USER_PASS` — test credentials
 - `RUN_OS` — platform identifier (appended to test project names)
 - `WSO2IP_ENV` — target environment (read at `integration_tests/shared_test.go:38`)
 - All tests run in non-interactive mode (`config.NonInteractive = true`)
