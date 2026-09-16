@@ -172,16 +172,14 @@ This codebase is open-sourced as the **WSO2 Integration Platform CLI**. Go ident
 - npm keyword `choreo` → `devant` (`scripts/mcp-npm-package/package.json`)
 - Stale i18n exclusions `vscode.choreo.ext` and `CHOREO_ENV` (the code emits `vscode.wso2ip.ext` and reads `WSO2IP_ENV`)
 - `.gitignore` guards for the pre-rename `/choreo` binary
-- Documentation links repointed to `https://wso2.com/integration-platform/docs/`. The paths are
-  **not** a base swap: the new site has a different taxonomy and every old
-  `develop-components/*` path 404s under it. Each link was remapped to a live page by topic and
-  verified 200 — connections → `/connectors/overview`, component.yaml endpoints →
-  `/develop/integration-artifacts`, git credentials → `/deploy-operate/cicd/github-actions`.
-- CI secret references `secrets.CHOREO_*` → `secrets.WSO2IP_*`. Safe because secrets are
-  per-repository settings and do not travel with code: `gh secret list` reports none on
-  either published repo, so nothing was resolving anyway. **Whoever configures CI must
-  create them under the new names** — `WSO2IP_PROD_TEST_USER_PASS`,
-  `WSO2IP_DEV_TEST_USER_PASS`, `WSO2IP_GITHUB_TOKEN`.
+- Documentation links repointed to `https://wso2.com/integration-platform/docs/`. Not a base
+  swap: the new site has a different taxonomy and every old `develop-components/*` path 404s
+  under it, while the old choreo paths still resolve — so a host-only rewrite silently breaks
+  them. The WSO2 Cloud pages live under `manage/cloud/`, found via the site's `sitemap.xml`
+  (1076 pages), which is the way to locate a replacement rather than guessing from the nav:
+  endpoints → `manage/cloud/configurations/endpoint-configurations`, git credentials →
+  `manage/cloud/cicd/connect-git-repository`, connections →
+  `develop/integration-artifacts/supporting/connections`. Verify any new link returns 200.
 
 **Left unchanged, and why.** A grep for "choreo" still returns ~119 hits. Every one is in a
 category where changing it breaks something; none are Go identifiers (that grep returns zero):
