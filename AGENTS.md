@@ -172,6 +172,11 @@ This codebase is open-sourced as the **WSO2 Integration Platform CLI**. Go ident
 - npm keyword `choreo` → `devant` (`scripts/mcp-npm-package/package.json`)
 - Stale i18n exclusions `vscode.choreo.ext` and `CHOREO_ENV` (the code emits `vscode.wso2ip.ext` and reads `WSO2IP_ENV`)
 - `.gitignore` guards for the pre-rename `/choreo` binary
+- Documentation links repointed to `https://wso2.com/integration-platform/docs/`. The paths are
+  **not** a base swap: the new site has a different taxonomy and every old
+  `develop-components/*` path 404s under it. Each link was remapped to a live page by topic and
+  verified 200 — connections → `/connectors/overview`, component.yaml endpoints →
+  `/develop/integration-artifacts`, git credentials → `/deploy-operate/cicd/github-actions`.
 - CI secret references `secrets.CHOREO_*` → `secrets.WSO2IP_*`. Safe because secrets are
   per-repository settings and do not travel with code: `gh secret list` reports none on
   either published repo, so nothing was resolving anyway. **Whoever configures CI must
@@ -191,7 +196,6 @@ category where changing it breaks something; none are Go identifiers (that grep 
 | `"choreo-cache"` | Value the database API accepts (the agent-facing text around it was softened) |
 | `"choreo"`, `cloudType=choreo` | Service identifiers sent to user-mgt and subscriptions |
 | `choreoanonymouspullable.azurecr.io` | The actual registry host |
-| `https://wso2.com/choreo/docs/...` | Live documentation links; no verified Integration Platform equivalents |
 | `.choreo/` in `.gitignore` | Guards a developer's pre-rebrand credential directory from being committed |
 | `workspaces/apps/choreo-console/...` in comments | Accurate path into the console repo, cited as the source of truth for integration filtering |
 
