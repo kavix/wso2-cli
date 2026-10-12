@@ -162,15 +162,15 @@ func TestTheListSummaryNeverCallsANonCurrentModuleCurrent(t *testing.T) {
 		},
 		"an incompatible module alone": {
 			statuses: []install.Status{incompatible},
-			mustName: []string{"incompatible with this shell and cannot be launched"},
+			mustName: []string{"incompatible with this shell and cannot be launched", "Reinstall the product or update the WSO2 CLI"},
 		},
 		"an incompatible pinned module alone": {
 			statuses: []install.Status{incompatiblePinned},
-			mustName: []string{"incompatible with this shell and cannot be launched"},
+			mustName: []string{"incompatible with this shell and cannot be launched", "Reinstall the product or update the WSO2 CLI"},
 		},
 		"an incompatible module with an update available": {
 			statuses: []install.Status{incompatibleUpdatable},
-			mustName: []string{"update available", "wso2 product update --all"},
+			mustName: []string{"incompatible with this shell and cannot be launched", "Reinstall the product or update the WSO2 CLI"},
 		},
 		"an incompatible module beside a current one": {
 			statuses: []install.Status{incompatible, current},
@@ -254,12 +254,11 @@ func TestTheListSummaryAndTheUpdateColumnCannotDisagree(t *testing.T) {
 	}
 }
 
-// TestStateOfPrioritizesUpdateAndReportsPinnedIncompatible pins that update
-// availability takes precedence over incompatibility (since updating can move
-// the module to a version this shell can launch), while an incompatible pinned
-// module is reported as incompatible rather than pinned (since it cannot be
-// launched or updated).
-func TestStateOfPrioritizesUpdateAndReportsPinnedIncompatible(t *testing.T) {
+// TestStateOfPrioritizesIncompatibilityAndReportsAvailableUpdate pins that an
+// incompatible module is never reported solely as an update to take, but surfaces
+// both states as 'vX available (incompatible)', while an incompatible pinned module
+// is reported as incompatible rather than pinned.
+func TestStateOfPrioritizesIncompatibilityAndReportsAvailableUpdate(t *testing.T) {
 	incompatiblePinned := install.Status{
 		Namespace:     "reference",
 		Installed:     "0.1.0",
@@ -282,11 +281,11 @@ func TestStateOfPrioritizesUpdateAndReportsPinnedIncompatible(t *testing.T) {
 		Update:       true,
 		Incompatible: true,
 	}
-	if got := stateOf(incompatibleUpdatable); got != stateUpdatable {
-		t.Errorf("stateOf(incompatibleUpdatable) = %v, want stateUpdatable", got)
+	if got := stateOf(incompatibleUpdatable); got != stateIncompatibleUpdatable {
+		t.Errorf("stateOf(incompatibleUpdatable) = %v, want stateIncompatibleUpdatable", got)
 	}
-	if col := updateColumn(incompatibleUpdatable); col != "v1.1.0 available" {
-		t.Errorf("updateColumn(incompatibleUpdatable) = %q, want %q", col, "v1.1.0 available")
+	if col := updateColumn(incompatibleUpdatable); col != "v1.1.0 available (incompatible)" {
+		t.Errorf("updateColumn(incompatibleUpdatable) = %q, want %q", col, "v1.1.0 available (incompatible)")
 	}
 }
 

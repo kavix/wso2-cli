@@ -1179,10 +1179,11 @@ func TestProductListReportsIncompatibleModuleWithUpdateAvailableAsUpdate(t *test
 		t.Fatalf("wso2 product list exited %d: %s", code, errOut)
 	}
 	output := out.String()
-	if !strings.Contains(output, "v0.2.0 available") {
-		t.Fatalf("wso2 product list did not report available update in update column:\n%s", output)
+	if !strings.Contains(output, "v0.2.0 available (incompatible)") {
+		t.Fatalf("wso2 product list did not report available update with incompatible tag in update column:\n%s", output)
 	}
-	if !strings.Contains(output, "1 product has an update available. Run wso2 product update --all to take it.") {
-		t.Fatalf("wso2 product list summary did not report available update:\n%s", output)
+	if !strings.Contains(output, "1 product is incompatible with this shell and cannot be launched. Reinstall the product or update the WSO2 CLI so a compatible version is installed.") {
+		t.Fatalf("wso2 product list summary did not report incompatible product remedy:\n%s", output)
 	}
 }
+

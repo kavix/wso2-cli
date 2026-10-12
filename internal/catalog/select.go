@@ -250,13 +250,9 @@ func incompatibleShell(namespace string, ranges []string, shell modules.ShellIde
 		quoted[i] = fmt.Sprintf("%q", r)
 	}
 	var message string
-	if len(quoted) <= 1 {
-		targetRange := `""`
-		if len(quoted) == 1 {
-			targetRange = quoted[0]
-		}
+	if len(quoted) == 1 {
 		message = fmt.Sprintf("the %q module requires a WSO2 CLI shell matching %s, and this shell is %s",
-			namespace, targetRange, shell.Version)
+			namespace, quoted[0], shell.Version)
 	} else {
 		message = fmt.Sprintf("no published version of the %q module supports this shell; "+
 			"the published versions require a WSO2 CLI shell matching %s, and this shell is %s",

@@ -173,9 +173,10 @@ The full history for one namespace, newest version first.
 
 Ordering the file newest first is a presentation choice and not a selection
 one. Among the versions its channel and pin policy permit, a shell selects the
-newest whose protocol range intersects what it speaks and which publishes an
-artifact for its platform. The numerically newest release is not assumed
-usable.
+newest whose protocol range intersects what it speaks, whose declared shell
+range contains its version, and which publishes an artifact for its platform.
+The numerically newest release is not assumed usable.
+
 
 ## Installing from the catalog
 

@@ -239,7 +239,7 @@ func launchable(declaration catalog.Declaration, shell modules.ShellIdentity) er
 		return nil
 	}
 	return fmt.Errorf("devorigin: the %s module declares that it runs under a shell matching %q, "+
-		"and the shell this install is for is %s, so it would install and then refuse to launch. "+
+		"and the shell this install is for is %s, so installing it is refused before anything is written. "+
 		"Nothing was built or installed. Either name the released wso2 that will launch it with -shell-version, "+
 		"or widen the shell range in %s/%s, or build the shell with a version injected: "+
 		"go build -ldflags \"-X github.com/wso2/wso2-cli/internal/version.shellVersion=1.0.0\" ./cmd/wso2",
